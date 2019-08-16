@@ -1,27 +1,29 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { addSmurf } from '../actions/index';
 
-const smurfForm = (props) => {
-  const { addSmurf} = props;
-const [item, setItem] = props.state;
-  const handleChange = event => setItem(event.target.value);
-  const handleSubmit = event => {
-    event.preventDefault();
-    addSmurf(item);
-    setItem("");
-  };
-  
+
+ 
+
+const SmurfForm = ({ dispatch }) => {
+  let input
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text"
-             name="name"
-             placeholder="name"
-             value={item}
-             onChange={handleChange} />
-      <button type="submit">AddSmurf</button>
-      
-    </form>
-  );
-};
-
-export default smurfForm
+    <div>
+      <form
+        onSubmit={e => {
+          e.preventDefault()
+          if (!input.value.trim()) {
+            return
+          }
+          dispatch(addSmurf(input.value))
+          input.value = ''
+        }}
+      >
+        <input ref={node => (input = node)} />
+        <button type="submit">AddSmurf</button>
+      </form>
+    </div>
+  )
+}
+export default SmurfForm;

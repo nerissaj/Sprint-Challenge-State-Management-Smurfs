@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 import {connect} from 'react-redux';
-import {getName, sendSmurf, addSmurf} from '../actions/index';
-import  {smurfForm} from './smurfForm';
+import {getData, sendSmurf} from '../actions/index';
+import SmurfList from './SmurfList';
+
 
 function App(props) {
 
@@ -10,22 +11,24 @@ function App(props) {
   if(!props.gotten)
     return (
       <div className="App">
+        <header className="App-header">
         <h1>SMURFS! 2.0 W/ Redux</h1>
         <div>Welcome to your state management version of Smurfs!</div>
         <div>Start inside of your `src/index.js` file!</div>
         <div>Have fun!
-        <smurfForm />
+         
+        <button onClick={props.getData}>Get New Name</button>
+       
         </div>
-        <button onClick={props.getName}>Get New Name</button>
-        <button onlick={props.addSmurf}dispatch(addTodo('Use Redux'))>Add Smurf</button>
+        </header>
       </div>
     )
     else return(
       <div className="App">
         <header className="App-header">
-          <h1>{props.name}</h1>
+          <h1>{props.smurfs.name}</h1>
          
-          <button onClick={props.getName}>Get New Smurf</button>
+          <button onClick={props.smurfs.getData}>Get New Smurf</button>
 
         </header>
       </div>
@@ -34,8 +37,8 @@ function App(props) {
 const mapStateToProps = state =>{
   return{
     name: state.name,
-    gotten:state.gotten
+    gotten: state.gotten
   }
 }
 
-export default connect(mapStateToProps, {getName})(App);
+export default connect(mapStateToProps, {getData})(App);

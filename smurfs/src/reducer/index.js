@@ -1,21 +1,16 @@
 // import reducer from './reducer/reducer';
-import {GET_NAME,SEND_SMURF} from '../actions/index';
+import {FETCH_SMURFS_GET_DATA,  FETCH_SMURFS_SEND_SMURF, FETCH_SMURFS_ADD_SMURF} from '../actions/index';
 
 export const initialState={
-    smurf:[
-        {name: "Brainey",
-        age: 200,
-        height: "5cm",
-        id: 0,
-        gotten: false
-        }
-    ],
+    smurfs:[],
+    isLoading:false,
+    error:''
    
    
 };
     export default (state = initialState, action) =>{
         switch(action.type){
-            case GET_NAME:
+            case FETCH_SMURFS_GET_DATA:
                 return{
                     ...state,
                     name: action.payload,
@@ -30,7 +25,7 @@ export const initialState={
       export function reducer(state, action) {
         console.log('action', action);
         switch (action.type) {
-        case "ADD_SMURF":
+        case "FETCH_SMURFS_ADD_SMURF":
           const newSmurf = {
               name: action.payload,
               age:"",
@@ -41,7 +36,34 @@ export const initialState={
           };
           return {
             ...state,
-            smurf: [...state.smurf, newSmurf]
+            smurf: [...state.smurfs, newSmurf]
           };
           
         }}
+        export function AddSmurf(state = [], action) {
+            switch (action.type) {
+              case FETCH_SMURFS_ADD_SMURF:
+                const addSmurf = action.text.trim()
+                return [...state, addSmurf]
+              default:
+                return state
+            }
+          }
+          export const newSmurf = createReducer([], {
+            [FETCH_SMURFS_ADD_SMURF]: (state, action) => {
+              const text = action.text.trim()
+              return [...state, text]
+            }
+          })
+          
+         
+          
+          function createReducer(initialState, handlers) {
+            return function reducer(state = initialState, action) {
+              if (handlers.hasOwnProperty(action.type)) {
+                return handlers[action.type](state, action)
+              } else {
+                return state
+              }
+            }
+          }
